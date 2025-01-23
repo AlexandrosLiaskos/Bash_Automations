@@ -14,7 +14,7 @@ chmod +x create_webapps.sh
 
 **Basic usage**:
 ```bash
-./create-webapps.sh
+./create_webapps.sh
 ```
 Follow the prompts:
 ```
