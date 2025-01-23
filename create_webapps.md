@@ -7,7 +7,7 @@ A minimalist bash script to create desktop web app launchers in Linux systems (U
 1. **Download script**:
 ```bash
 wget https://raw.githubusercontent.com/AlexandrosLiaskos/Bash_Automations/main/create_webapps.sh
-chmod +x create-webapp.sh
+chmod +x create_webapp.sh
 ```
 
 ## 🛠️ Usage
