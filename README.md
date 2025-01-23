@@ -6,7 +6,7 @@ A collection of Bash scripts for automating various system administration and de
 
 | Script | Description | Documentation |
 |--------|-------------|---------------|
-| [create_webapps.sh](create_webapps/create_webapps.sh) | A minimalist bash script to create desktop web app launchers in Linux systems (Ubuntu/Debian-based). | [View Docs](docs/system_info.md) |
+| [create_webapps.sh](create_webapps/create_webapps.sh) | A minimalist bash script to create desktop web app launchers in Linux systems (Ubuntu/Debian-based). | [View Docs](create_webapps/create_webapps.md) |
 
 ## 📜 Usage
 
