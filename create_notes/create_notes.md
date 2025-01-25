@@ -39,6 +39,9 @@ Features:
 - Lists all markdown notes
 - Interactive note selection
 - Views notes using 'less' pager
+  - Press 'q' to quit reading
+  - Use arrow keys or Space/B to navigate
+  - Press 'h' for full help menu
 
 ## 📁 File Structure
 Notes are stored in:

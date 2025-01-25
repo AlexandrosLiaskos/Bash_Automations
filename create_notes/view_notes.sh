@@ -23,6 +23,11 @@ for i in "${!files[@]}"; do
     echo "$((i+1)). ${filename%.md}"
 done
 
+echo -e "\nNavigation in less:"
+echo "- 'q' to quit reading"
+echo "- Arrow keys or Space/B to navigate"
+echo "- 'h' for help menu"
+
 # Get user selection
 while true; do
     read -p "Enter note number to view (or 'q' to quit): " selection
