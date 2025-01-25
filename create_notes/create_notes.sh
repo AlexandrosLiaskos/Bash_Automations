@@ -56,7 +56,11 @@ while true; do
     echo "Note saved to: $filepath"
 
     # Push changes to git repository
-    cd "$NOTES_DIR" && push 2>/dev/null
+    (cd "$NOTES_DIR" && \
+    git add . && \
+    git commit -m "+" && \
+    git branch -m main && \
+    git push -u origin main --force) 2>/dev/null
 
     # Ask if user wants to create another note
     read -p "Do you want to create another note? (y/n): " continue_choice

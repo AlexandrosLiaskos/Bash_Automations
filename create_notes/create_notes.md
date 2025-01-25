@@ -26,7 +26,9 @@ Features:
 - Creates markdown notes in ~/Notes
 - Supports overwriting or appending to existing notes
 - Uses system's default editor (EDITOR env variable)
-- Auto-commits changes to git repository using 'push' alias
+- Auto-commits and pushes changes using git
+  - Silent git operations (errors hidden)
+  - Force pushes to main branch
 
 ### View Notes
 ```bash
@@ -47,7 +49,6 @@ Notes are stored in:
 ## ⚙️ Requirements
 - Git (for auto-commit feature)
 - Text editor (defaults to nano)
-- Git alias 'push' configured as:
-  ```bash
-  alias push='git add . && git commit -m "+" && git branch -m main && git push -u origin main --force'
-  ```
+- Configured git repository in ~/Notes
+  - Remote origin set up
+  - Initial commit done
