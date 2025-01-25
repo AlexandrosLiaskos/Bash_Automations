@@ -38,7 +38,7 @@ view_notes() {
     if [ ${#files[@]} -eq 0 ]; then
         echo "No notes found."
         return
-    }
+    fi
     
     echo "Available notes:"
     for i in "${!files[@]}"; do
@@ -66,7 +66,7 @@ modify_note() {
     if [ ${#files[@]} -eq 0 ]; then
         echo "No notes found."
         return
-    }
+    fi
     
     echo "Available notes:"
     for i in "${!files[@]}"; do
@@ -103,7 +103,7 @@ delete_note() {
     if [ ${#files[@]} -eq 0 ]; then
         echo "No notes found."
         return
-    }
+    fi
     
     echo "Available notes:"
     for i in "${!files[@]}"; do
