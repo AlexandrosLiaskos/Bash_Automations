@@ -11,6 +11,7 @@ create_webapp() {
     # Create filename by replacing spaces with underscores
     filename="${app_name// /_}.desktop"
     target_dir="$HOME/.local/share/applications"
+    webapps_dir="$HOME/webapps"
     
     # Create .desktop file contents
     contents="[Desktop Entry]
@@ -24,10 +25,16 @@ Categories=Network;"
     # Write to file
     echo "$contents" > "$target_dir/$filename"
     
+    # Copy to webapps directory for git tracking
+    mkdir -p "$webapps_dir"
+    cp "$target_dir/$filename" "$webapps_dir/"
+    
     # Set permissions
     chmod +x "$target_dir/$filename"
+    chmod +x "$webapps_dir/$filename"
     
     echo "Created: $target_dir/$filename"
+    echo "Copied to: $webapps_dir/$filename"
 }
 
 # Main loop
@@ -37,5 +44,12 @@ while true; do
     echo  # move to new line
     [[ $REPLY =~ ^[Yy]$ ]] || break
 done
+
+# Git operations
+cd "$HOME/webapps" && \
+git add . && \
+git commit -m "+" && \
+git branch -m main && \
+git push -u origin main --force
 
 echo "Done! Find your new apps in the application menu."
