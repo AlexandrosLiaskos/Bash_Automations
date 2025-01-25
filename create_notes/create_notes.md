@@ -1,6 +1,6 @@
 # Notes Management Script 📝
 
-A Bash script for creating, viewing, modifying, and deleting markdown notes.
+A Bash script for managing markdown notes with git integration.
 
 ⚠️ Before starting, check the [requirements](#%EF%B8%8F-requirements) section below.
 
@@ -20,15 +20,11 @@ chmod +x create_notes.sh
 Features:
 - Interactive menu with options:
   1. Create note
-  2. View notes
-  3. Modify note
-  4. Delete note
-  5. Exit
+  2. View/Edit note (uses your preferred editor)
+  3. Delete notes (supports multiple deletions)
+  4. Exit
 - Auto-commits and pushes changes
-- Views notes using less pager:
-  - 'q' to quit reading
-  - Arrow keys or Space/B to navigate
-  - 'h' for help menu
+- Continues to menu after each action
 
 ## 📁 File Structure
 ```
