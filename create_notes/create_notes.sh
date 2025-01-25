@@ -1,71 +1,157 @@
 #!/bin/bash
 
-# Check if EDITOR is set, if not default to nano
+NOTES_DIR="$HOME/Notes"
+mkdir -p "$NOTES_DIR"
+
 if [ -z "$EDITOR" ]; then
     EDITOR="nano"
 fi
 
-while true; do
-    # Ensure the Notes directory exists
-    NOTES_DIR="$HOME/Notes"
-    mkdir -p "$NOTES_DIR"
-
-    # Prompt for the note title
+create_note() {
     read -p "Enter note title: " title
-
-    # Convert title to a valid filename
     filename=$(echo "$title" | tr ' ' '_').md
     filepath="$NOTES_DIR/$filename"
-
-    # Create temporary file
+    
     tmpfile=$(mktemp)
     echo -e "# $title\n" > "$tmpfile"
-
-    # Check if file exists and ask for action
+    
     if [ -f "$filepath" ]; then
-        read -p "Note exists. Do you want to (o)verwrite, (a)ppend, or (c)ancel? [o/a/c]: " action
-        case "$action" in
-            o|O)
-                echo "Overwriting existing note..."
-                ;;
-            a|A)
-                echo "Appending to existing note..."
-                cat "$filepath" > "$tmpfile"
-                echo -e "\n---\n" >> "$tmpfile"
-                ;;
-            *)
-                echo "Operation cancelled."
-                rm "$tmpfile"
-                continue
-                ;;
-        esac
+        echo "Note already exists."
+        return
     fi
 
-    # Open the temporary file in the editor
     $EDITOR "$tmpfile"
-
-    # Save the content to the actual note file
-    if [ -f "$filepath" ] && [ "$action" = "a" -o "$action" = "A" ]; then
-        cat "$tmpfile" > "$filepath"
-    else
-        cat "$tmpfile" > "$filepath"
-    fi
-
-    # Clean up
+    cat "$tmpfile" > "$filepath"
     rm "$tmpfile"
     echo "Note saved to: $filepath"
-
-    # Push changes to git repository
+    
     (cd "$NOTES_DIR" && \
-    git add . && \
-    git commit -m "+" && \
-    git branch -m main && \
-    git push -u origin main --force) 2>/dev/null
+     git add . && \
+     git commit -m "+" && \
+     git branch -m main && \
+     git push -u origin main --force) 2>/dev/null
+}
 
-    # Ask if user wants to create another note
-    read -p "Do you want to create another note? (y/n): " continue_choice
+view_notes() {
+    files=($(ls "$NOTES_DIR"/*.md 2>/dev/null))
+    
+    if [ ${#files[@]} -eq 0 ]; then
+        echo "No notes found."
+        return
+    }
+    
+    echo "Available notes:"
+    for i in "${!files[@]}"; do
+        filename=$(basename "${files[$i]}")
+        echo "$((i+1)). ${filename%.md}"
+    done
+    
+    echo -e "\nNavigation in less:"
+    echo "- 'q' to quit reading"
+    echo "- Arrow keys or Space/B to navigate"
+    echo "- 'h' for help menu"
+    
+    read -p "Enter note number to view: " selection
+    
+    if [[ "$selection" =~ ^[0-9]+$ ]] && [ "$selection" -ge 1 ] && [ "$selection" -le ${#files[@]} ]; then
+        less "${files[$((selection-1))]}"
+    else
+        echo "Invalid selection."
+    fi
+}
+
+modify_note() {
+    files=($(ls "$NOTES_DIR"/*.md 2>/dev/null))
+    
+    if [ ${#files[@]} -eq 0 ]; then
+        echo "No notes found."
+        return
+    }
+    
+    echo "Available notes:"
+    for i in "${!files[@]}"; do
+        filename=$(basename "${files[$i]}")
+        echo "$((i+1)). ${filename%.md}"
+    done
+    
+    read -p "Enter note number to modify: " selection
+    
+    if [[ "$selection" =~ ^[0-9]+$ ]] && [ "$selection" -ge 1 ] && [ "$selection" -le ${#files[@]} ]; then
+        filepath="${files[$((selection-1))]}"
+        tmpfile=$(mktemp)
+        cat "$filepath" > "$tmpfile"
+        
+        $EDITOR "$tmpfile"
+        cat "$tmpfile" > "$filepath"
+        rm "$tmpfile"
+        
+        (cd "$NOTES_DIR" && \
+         git add . && \
+         git commit -m "+" && \
+         git branch -m main && \
+         git push -u origin main --force) 2>/dev/null
+        
+        echo "Note updated."
+    else
+        echo "Invalid selection."
+    fi
+}
+
+delete_note() {
+    files=($(ls "$NOTES_DIR"/*.md 2>/dev/null))
+    
+    if [ ${#files[@]} -eq 0 ]; then
+        echo "No notes found."
+        return
+    }
+    
+    echo "Available notes:"
+    for i in "${!files[@]}"; do
+        filename=$(basename "${files[$i]}")
+        echo "$((i+1)). ${filename%.md}"
+    done
+    
+    read -p "Enter note number to delete: " selection
+    
+    if [[ "$selection" =~ ^[0-9]+$ ]] && [ "$selection" -ge 1 ] && [ "$selection" -le ${#files[@]} ]; then
+        read -p "Are you sure you want to delete this note? (y/n): " confirm
+        if [ "$confirm" = "y" ] || [ "$confirm" = "Y" ]; then
+            rm "${files[$((selection-1))]}"
+            echo "Note deleted."
+            
+            (cd "$NOTES_DIR" && \
+             git add . && \
+             git commit -m "+" && \
+             git branch -m main && \
+             git push -u origin main --force) 2>/dev/null
+        fi
+    else
+        echo "Invalid selection."
+    fi
+}
+
+while true; do
+    echo -e "\n1. Create note"
+    echo "2. View notes"
+    echo "3. Modify note"
+    echo "4. Delete note"
+    echo "5. Exit"
+    
+    read -p "Choose action (1-5): " choice
+    
+    case $choice in
+        1) create_note ;;
+        2) view_notes ;;
+        3) modify_note ;;
+        4) delete_note ;;
+        5) break ;;
+        *) echo "Invalid choice." ;;
+    esac
+
+    read -p "Do you want to perform another action? (y/n): " continue_choice
     if [ "$continue_choice" != "y" ] && [ "$continue_choice" != "Y" ]; then
         break
     fi
-    echo -e "\n-------------------\n"
 done
+
+exit 0

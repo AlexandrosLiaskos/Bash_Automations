@@ -1,50 +1,36 @@
-# Notes Management Scripts 📝
+# Notes Management Script 📝
 
-Bash scripts for creating and viewing markdown notes. 
+A Bash script for creating, viewing, modifying, and deleting markdown notes.
 
 ⚠️ Before starting, check the [requirements](#%EF%B8%8F-requirements) section below.
 
 ## 📥 Quick Install
 
 ```bash
-# Download scripts
 wget https://raw.githubusercontent.com/AlexandrosLiaskos/Bash_Automations/main/create_notes/create_notes.sh
-wget https://raw.githubusercontent.com/AlexandrosLiaskos/Bash_Automations/main/create_notes/view_notes.sh
-
-# Make executable
-chmod +x create_notes.sh view_notes.sh
+chmod +x create_notes.sh
 ```
 
 ## 🛠️ Usage
 
-### Create Notes
 ```bash
 ./create_notes.sh
 ```
 
 Features:
-- Creates markdown notes in ~/Notes
-- Supports overwriting or appending to existing notes
-- Uses system's default editor (EDITOR env variable)
-- Auto-commits and pushes changes using git
-  - Silent git operations (errors hidden)
-  - Force pushes to main branch
-
-### View Notes
-```bash
-./view_notes.sh
-```
-
-Features:
-- Lists all markdown notes
-- Interactive note selection
-- Views notes using 'less' pager
-  - Press 'q' to quit reading
-  - Use arrow keys or Space/B to navigate
-  - Press 'h' for full help menu
+- Interactive menu with options:
+  1. Create note
+  2. View notes
+  3. Modify note
+  4. Delete note
+  5. Exit
+- Auto-commits and pushes changes
+- Views notes using less pager:
+  - 'q' to quit reading
+  - Arrow keys or Space/B to navigate
+  - 'h' for help menu
 
 ## 📁 File Structure
-Notes are stored in:
 ```
 ~/Notes/*.md
 ```
