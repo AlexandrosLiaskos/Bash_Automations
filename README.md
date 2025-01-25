@@ -1,6 +1,6 @@
 # Bash Automation Scripts 🚀
 
-A collection of Bash scripts for automating various system administration and development tasks. These scripts aim to simplify repetitive tasks and improve productivity. The outputs of them are integrated with github backup integration, as seen in the docs of each one below.
+A collection of Bash scripts for automating various system administration and development tasks. These scripts aim to simplify repetitive tasks and improve productivity. The outputs of them are integrated with github backup repositories and automatic push, as seen in the docs of each one below.
 
 ## 📂 Scripts
 
